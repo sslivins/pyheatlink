@@ -171,6 +171,17 @@ class ParkStatus:
     quiet_fan: bool
     room_sensor: bool
     next_probe_s: int | None
+    # Only reported while ``held`` (waiting for a Tandem turn):
+    #: What the other rooms are doing: ``heat``, ``cool`` or ``switch``.
+    tandem: str | None = None
+    #: Seconds until this head's turn starts, when known.
+    tandem_eta_s: int | None = None
+    #: The mode this head's turn will run (``heat``/``cool``) with the ETA.
+    tandem_next: str | None = None
+    #: Whether the room needs its turn: ``yes``, ``no`` or ``unknown``.
+    need: str | None = None
+    #: A FAN-mode air check is running to find out whether it needs a turn.
+    checking: bool = False
 
     @classmethod
     def from_dict(cls, d: JSON) -> ParkStatus:
@@ -187,6 +198,11 @@ class ParkStatus:
             quiet_fan=_bool(d, "quiet_fan"),
             room_sensor=_bool(d, "room_sensor"),
             next_probe_s=_opt_int(d, "next_probe_s"),
+            tandem=_opt_str(d, "tandem"),
+            tandem_eta_s=_opt_int(d, "tandem_eta_s"),
+            tandem_next=_opt_str(d, "tandem_next"),
+            need=_opt_str(d, "need"),
+            checking=_bool(d, "checking"),
         )
 
 

@@ -11,6 +11,7 @@ from pyheatlink import (
     Info,
     OtaStatus,
     ParkConfig,
+    ParkStatus,
     Sensors,
     Settings,
     Status,
@@ -106,6 +107,22 @@ def test_park_shared_fields() -> None:
     p = ParkConfig.from_dict(load("park"))
     assert p.shared and "min_off_s" in p.shared_fields and "delta_c" not in p.shared_fields
     assert p.delta_c == 0.5
+    assert p.status is not None and p.status.tandem is None and not p.status.checking
+
+
+def test_park_status_held_for_tandem() -> None:
+    p = ParkStatus.from_dict(
+        {
+            "held": True,
+            "tandem": "heat",
+            "tandem_eta_s": 1980,
+            "tandem_next": "cool",
+            "need": "yes",
+            "checking": False,
+        }
+    )
+    assert p.held and p.tandem == "heat" and p.tandem_eta_s == 1980
+    assert p.tandem_next == "cool" and p.need == "yes"
 
 
 def test_sensors() -> None:
