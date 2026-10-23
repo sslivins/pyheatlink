@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyheatlink"
-version = "0.1.2"
+version = "0.1.3"
 description = "Async Python client for HeatLink, the local controller for Mitsubishi mini-split heads"
 readme = "README.md"
 license = { text = "MIT" }
