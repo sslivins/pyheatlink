@@ -84,6 +84,12 @@ async def test_set_climate_body(client: HeatLinkClient, head: FakeHead) -> None:
     assert head.last("POST", "/api/settings").json == {"power": "OFF"}
     await client.set_climate(vane="swing", wide_vane="<>")
     assert head.last("POST", "/api/settings").json == {"vane": "SWING", "wideVane": "<>"}
+    await client.set_climate(mode="auto", heat_to=19.5, cool_to=23)
+    assert head.last("POST", "/api/settings").json == {
+        "mode": "AUTO",
+        "heat_to": 19.5,
+        "cool_to": 23,
+    }
     with pytest.raises(ValueError):
         await client.set_climate()
 

@@ -228,17 +228,23 @@ class HeatLinkClient:
         fan: str | None = None,
         vane: str | None = None,
         wide_vane: str | None = None,
+        heat_to: float | None = None,
+        cool_to: float | None = None,
     ) -> None:
         """Change any mix of climate settings in one call.
 
         Setting ``mode`` also turns the head on unless ``power=False`` is
         passed with it, in which case the mode is stored and the head stays
-        off.
+        off. ``heat_to``/``cool_to`` set the Auto range (Tandem on); the
+        firmware keeps them at least 2 °C apart and applies them before
+        ``mode``.
         """
         body = _drop_none(
             mode=mode.upper() if mode is not None else None,
             power=None if power is None else ("ON" if power else "OFF"),
             temperature=temperature,
+            heat_to=heat_to,
+            cool_to=cool_to,
             fan=fan.upper() if fan is not None else None,
             vane=vane.upper() if vane is not None else None,
             wideVane=wide_vane,

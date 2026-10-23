@@ -78,7 +78,7 @@ record (`pyheatlink.const.ZEROCONF_TYPE`).
 | `get_sensors()` | `GET /api/sensors` | read |
 | `get_events(since, limit)` | `GET /api/events` | read |
 | `get_update()` / `get_ota_status()` | `GET /api/update`, `/api/ota/status` | read |
-| `set_climate(power, mode, temperature, fan, vane, wide_vane)` | `POST /api/settings` | control |
+| `set_climate(power, mode, temperature, fan, vane, wide_vane, heat_to, cool_to)` | `POST /api/settings` | control |
 | `set_remote_temp(temp, ttl_s)` / `clear_remote_temp()` | `POST /api/remote-temp` | control |
 | `set_park(...)` | `POST /api/park` | admin |
 | `set_tandem(...)` | `POST /api/group/slice` | admin |
