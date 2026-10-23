@@ -241,6 +241,27 @@ class RemoteTemp:
 
 
 @dataclass(frozen=True)
+class AutoRange:
+    """HeatLink's Auto range (Tandem on): heat below ``heat_to``, cool above ``cool_to``."""
+
+    managed: bool
+    available: bool
+    heat_to: float | None
+    cool_to: float | None
+    dir: str
+
+    @classmethod
+    def from_dict(cls, d: JSON) -> AutoRange:
+        return cls(
+            managed=_bool(d, "managed"),
+            available=_bool(d, "available"),
+            heat_to=_opt_float(d, "heat_to"),
+            cool_to=_opt_float(d, "cool_to"),
+            dir=_str(d, "dir", "HEAT"),
+        )
+
+
+@dataclass(frozen=True)
 class Settings:
     """Climate state of one head (``GET /api/settings``)."""
 
@@ -263,6 +284,7 @@ class Settings:
     park: ParkStatus | None
     room_sensor: RoomSensorSummary | None
     remote_temp: RemoteTemp | None
+    auto: AutoRange | None = None
     raw: JSON = _raw()
 
     @classmethod
@@ -271,6 +293,7 @@ class Settings:
         park = d.get("park")
         rs = d.get("roomSensor")
         rt = d.get("remoteTemp")
+        au = d.get("auto")
         error_code = _opt_str(d, "errorCode")
         fault = _opt_bool(d, "fault")
         if fault is None:
@@ -295,6 +318,7 @@ class Settings:
             park=ParkStatus.from_dict(park) if isinstance(park, Mapping) else None,
             room_sensor=RoomSensorSummary.from_dict(rs) if isinstance(rs, Mapping) else None,
             remote_temp=RemoteTemp.from_dict(rt) if isinstance(rt, Mapping) else None,
+            auto=AutoRange.from_dict(au) if isinstance(au, Mapping) else None,
             raw=d,
         )
 

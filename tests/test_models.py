@@ -3,6 +3,7 @@ from __future__ import annotations
 import pytest
 
 from pyheatlink import (
+    AutoRange,
     Capabilities,
     EventLog,
     Feature,
@@ -67,6 +68,25 @@ def test_settings() -> None:
     assert s.park is not None and s.park.slicing and s.park.next_probe_s is None
     assert s.room_sensor is not None and s.room_sensor.temp == 17.4
     assert s.remote_temp is None
+    assert s.auto is None
+
+
+def test_settings_auto_range() -> None:
+    s = Settings.from_dict(
+        {
+            "power": "ON",
+            "mode": "AUTO",
+            "temperature": 24,
+            "auto": {
+                "managed": True,
+                "available": True,
+                "heat_to": 20,
+                "cool_to": 24,
+                "dir": "COOL",
+            },
+        }
+    )
+    assert s.auto == AutoRange(True, True, 20.0, 24.0, "COOL")
 
 
 def test_settings_remote_temp_and_fault_fallback() -> None:

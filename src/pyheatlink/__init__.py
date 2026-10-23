@@ -14,6 +14,7 @@ from .errors import (
     HeatLinkUnsupportedError,
 )
 from .models import (
+    AutoRange,
     Capabilities,
     Event,
     EventLog,
@@ -38,6 +39,7 @@ from .models import (
 )
 
 __all__ = [
+    "AutoRange",
     "Capabilities",
     "Event",
     "EventLog",
